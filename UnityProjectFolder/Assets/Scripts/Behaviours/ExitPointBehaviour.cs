@@ -11,6 +11,8 @@ public class ExitPointBehaviour : MonoBehaviour {
 	}
 
 	[SerializeField] private ExitPointType CurrentEPType;
+    [SerializeField] private Animation Idle;
+    [SerializeField] private Animation Home;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +32,15 @@ public class ExitPointBehaviour : MonoBehaviour {
 		{
 			LM_Script.ShapeInHome();
 			LM_Script.ExitShape(other.gameObject);
+
+            Idle.Stop();
+            StartCoroutine(PlayAnimation());
 		}
 	}
+
+    IEnumerator PlayAnimation()
+    {
+        yield return new WaitForSeconds(0.15F);
+        Home.Play();
+    }
 }

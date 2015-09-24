@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour {
 	[Header("Level Variables")]
 	[SerializeField] private string LevelTitleName;
 	[SerializeField] private string LevelTagLineText;
+    [SerializeField] private string NextLevelID;
 
 
 	[SerializeField] private int totalTurns;
@@ -62,6 +63,11 @@ public class LevelManager : MonoBehaviour {
 		LevelCompleteItems.Play();
 		isLevelComplete = true;
 	}
+
+    public void NextLevel()
+    {
+        Application.LoadLevel(NextLevelID);
+    }
 
 	public void Turns()
 	{
