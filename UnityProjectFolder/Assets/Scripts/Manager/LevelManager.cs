@@ -84,6 +84,11 @@ public class LevelManager : MonoBehaviour {
 		GameOverItems.Play();
 	}
 
+	public void ResetLevel()
+	{
+		Application.LoadLevel(Application.loadedLevelName);
+	}
+
 	IEnumerator FadeOutLevelTitle()
 	{
 		yield return new WaitForSeconds(5.0F);
