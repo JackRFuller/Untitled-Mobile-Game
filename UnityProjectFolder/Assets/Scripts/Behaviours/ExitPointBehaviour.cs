@@ -14,10 +14,13 @@ public class ExitPointBehaviour : MonoBehaviour {
     [SerializeField] private Animation Idle;
     [SerializeField] private Animation Home;
 
+	private string ExitType;
+
 	// Use this for initialization
 	void Start () {
 
 		LM_Script = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		ExitType = CurrentEPType.ToString();
 	
 	}
 	
@@ -28,10 +31,12 @@ public class ExitPointBehaviour : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.name == CurrentEPType.ToString())
+		if(other.name.Contains(ExitType))
 		{
 			LM_Script.ShapeInHome();
-			LM_Script.ExitShape(other.gameObject);
+			other.GetComponent<ShapeBehaviour>().Home = true;
+			other.GetComponent<ShapeBehaviour>().TurnOffShape();
+
 
             Idle.Stop();
             StartCoroutine(PlayAnimation());

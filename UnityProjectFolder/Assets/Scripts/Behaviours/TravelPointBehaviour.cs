@@ -32,7 +32,11 @@ public class TravelPointBehaviour : MonoBehaviour {
 	{
 		if(other.tag == "Shape")
 		{
-			MM_Script.NewTravelPoint(gameObject);
+			if(MM_Script.hasMoved)
+			{
+				MM_Script.NewTravelPoint(gameObject);
+			}
+
 		}
 	}
 }

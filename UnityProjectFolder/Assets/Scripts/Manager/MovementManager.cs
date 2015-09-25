@@ -8,8 +8,9 @@ public class MovementManager : MonoBehaviour {
 	[Header("Shape Variables")]
 	public GameObject activeShape;
 	[SerializeField] private float shapeSpeed;
-	private bool isMoving = false;
+	public bool isMoving = false;
 	private bool isLerping = false;
+	public bool hasMoved = false;
 
 	//LerpingVariables
 	private float timeStartedLerping;
@@ -17,18 +18,27 @@ public class MovementManager : MonoBehaviour {
 	private GameObject TravelPoint;
 
 	[Header("TravelPoint Variables")]
-	public Transform startingPosition;
-	private TravelPointBehaviour TPB_Script;
-
-
+	public TravelPointBehaviour TPB_Script;
 
 	// Use this for initialization
 	void Start () {
 
 		LM_Script = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-		activeShape.transform.position = startingPosition.position;
-		TPB_Script = startingPosition.GetComponent<TravelPointBehaviour>();
-	
+		activeShape.GetComponent<ShapeBehaviour>().TurnOnShape();
+
+		StartCoroutine(WaitToChangeShape());
+	}
+
+	IEnumerator WaitToChangeShape()
+	{
+		yield return new WaitForSeconds(0.2F);
+		ChangeShape();
+	}
+
+	public void ChangeShape()
+	{
+		TPB_Script = activeShape.GetComponent<ShapeBehaviour>().GetTBD_Script();
+		activeShape.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
 	}
 
 	void FixedUpdate()
@@ -39,6 +49,8 @@ public class MovementManager : MonoBehaviour {
 			float percentageComplete = timeSinceStarted / timeTakenDuringLerp;
 			
 			activeShape.transform.position = Vector2.Lerp(activeShape.transform.position, TravelPoint.transform.position,percentageComplete);
+
+		
 
 			if(percentageComplete >= 1.0F)
 			{
@@ -64,24 +76,28 @@ public class MovementManager : MonoBehaviour {
 					if(TPB_Script.AvailableMovements.Up == true)
 					{
 						movementDirection = Vector2.up;
+						hasMoved = true;
 					}
 					break;
 				case("Left"):
 					if(TPB_Script.AvailableMovements.Left == true)
 					{
 						movementDirection = Vector2.left;
+						hasMoved = true;
 					}
 					break;
 				case("Right"):
 					if(TPB_Script.AvailableMovements.Right == true)
 					{
 						movementDirection = Vector2.right;
+						hasMoved = true;
 					}
 					break;
 				case("Down"):
 					if(TPB_Script.AvailableMovements.Down == true)
 					{
 						movementDirection = Vector2.down;
+						hasMoved = true;
 					}
 					break;
 				}
@@ -113,7 +129,5 @@ public class MovementManager : MonoBehaviour {
 		timeStartedLerping = Time.time;
 		TravelPoint = NewTravelPoint;
 		isLerping = true;
-
-
 	}
 }

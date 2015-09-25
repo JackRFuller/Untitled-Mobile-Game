@@ -21,26 +21,56 @@ public class ActiveShapeManager : MonoBehaviour {
         {
             DetectShape();
         }
+
+		if(Input.touchCount > 0)
+		{
+			Touch touch = Input.GetTouch(0);
+			DetectShapeTouch(touch);
+		}
 	
+	}
+
+	void DetectShapeTouch(Touch touchpoint)
+	{
+		Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touchpoint.position);
+		RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+		if (hit.collider != null)
+		{
+			if(hit.collider.tag == "Shape")
+			{
+				if(!MM_Script.isMoving)
+				{
+					ChangeActiveShape(hit.collider.gameObject);           
+				}
+				
+			}  
+		}
 	}
 
     void DetectShape()
     {
-
-
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null)
         {
             if(hit.collider.tag == "Shape")
             {
-                Debug.Log(hit.collider.name);
-                MM_Script.activeShape = hit.collider.gameObject;
-
-            }
-            
-            
+				if(!MM_Script.isMoving)
+				{
+					ChangeActiveShape(hit.collider.gameObject);           
+				}
+				  
+            }  
         }
 
     }
+
+	void ChangeActiveShape(GameObject hit)
+	{
+		MM_Script.activeShape.GetComponent<ShapeBehaviour>().TurnOffShape();
+		MM_Script.activeShape = hit.GetComponent<Collider2D>().gameObject;
+
+		MM_Script.activeShape.GetComponent<ShapeBehaviour>().TurnOnShape();
+		MM_Script.ChangeShape();
+	}
 }
