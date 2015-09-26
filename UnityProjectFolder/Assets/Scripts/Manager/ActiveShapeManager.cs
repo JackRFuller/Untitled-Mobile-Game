@@ -40,7 +40,12 @@ public class ActiveShapeManager : MonoBehaviour {
 			{
 				if(!MM_Script.isMoving)
 				{
-					ChangeActiveShape(hit.collider.gameObject);           
+                    if(hit.collider.gameObject != MM_Script.activeShape)
+                    {
+                        ChangeActiveShape(hit.collider.gameObject);
+
+                    }
+					
 				}
 				
 			}  

@@ -8,6 +8,7 @@ public class ExitPointBehaviour : MonoBehaviour {
 	private enum ExitPointType
 	{
 		Square,
+        Circle,
 	}
 
 	[SerializeField] private ExitPointType CurrentEPType;

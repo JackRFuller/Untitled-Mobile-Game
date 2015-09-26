@@ -93,6 +93,11 @@ public class LevelManager : MonoBehaviour {
 		isLevelComplete = true;
 	}
 
+    public void ResetLevel()
+    {
+        Application.LoadLevel(Application.loadedLevelName);
+    }
+
     public void NextLevel()
     {
         Application.LoadLevel(NextLevelID);
@@ -117,11 +122,6 @@ public class LevelManager : MonoBehaviour {
 	{
 		isGameOver = true;
 		GameOverItems.Play();
-	}
-
-	public void ResetLevel()
-	{
-		Application.LoadLevel(Application.loadedLevelName);
 	}
 
 	IEnumerator FadeOutLevelTitle()
